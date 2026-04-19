@@ -1,6 +1,347 @@
 # 📊 Estructura de Base de Datos - Sistema de Cotizaciones
 
-## 📋 Resumen
+## �️ Script SQL de Creación
+
+```sql
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS sistema_cotizaciones 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_general_ci;
+
+USE sistema_cotizaciones;
+
+-- Tabla: asignaciones
+CREATE TABLE `asignaciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_ot` int(11) DEFAULT NULL,
+  `id_vehiculo` int(11) DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `id_asociado` int(11) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_ot` (`id_ot`),
+  KEY `id_vehiculo` (`id_vehiculo`),
+  KEY `id_empleado` (`id_empleado`),
+  KEY `id_asociado` (`id_asociado`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `asignaciones_ibfk_1` FOREIGN KEY (`id_ot`) REFERENCES `ordenes_trabajo` (`id`),
+  CONSTRAINT `asignaciones_ibfk_2` FOREIGN KEY (`id_vehiculo`) REFERENCES `flota` (`id`),
+  CONSTRAINT `asignaciones_ibfk_3` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id`),
+  CONSTRAINT `asignaciones_ibfk_4` FOREIGN KEY (`id_asociado`) REFERENCES `asociados` (`id`),
+  CONSTRAINT `asignaciones_ibfk_5` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: asociados
+CREATE TABLE `asociados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(255) NOT NULL,
+  `RUT` varchar(20) DEFAULT NULL,
+  `TELEFONO` varchar(50) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `VEHICULO` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: cargos
+CREATE TABLE `cargos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: clientes
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(255) NOT NULL,
+  `RUT` varchar(20) NOT NULL,
+  `TIPO` varchar(50) DEFAULT NULL,
+  `DIRECCION` varchar(500) DEFAULT NULL,
+  `TELEFONO` varchar(50) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `GIRO` varchar(255) DEFAULT NULL,
+  `credito` decimal(15,2) DEFAULT 300000.00,
+  `credito_asignado` decimal(15,2) DEFAULT 300000.00,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `RUT` (`RUT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: codigos_autorizacion
+CREATE TABLE `codigos_autorizacion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rut_cliente` varchar(20) DEFAULT NULL,
+  `codigo` varchar(50) DEFAULT NULL,
+  `creado_por` varchar(255) DEFAULT NULL,
+  `creado_en` datetime DEFAULT current_timestamp(),
+  `estado` varchar(20) DEFAULT 'pendiente',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: comunas
+CREATE TABLE `comunas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `region` varchar(255) DEFAULT NULL,
+  `monto` decimal(15,2) DEFAULT 0.00,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: costos_variables
+CREATE TABLE `costos_variables` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Tipo` varchar(50) DEFAULT NULL,
+  `Nombre` varchar(255) DEFAULT NULL,
+  `monto` decimal(15,2) DEFAULT NULL,
+  `Descripcion` text DEFAULT NULL,
+  `grupo` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: cotizaciones
+CREATE TABLE `cotizaciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rut_CLIENTE` varchar(20) DEFAULT NULL,
+  `id_division` int(11) DEFAULT NULL,
+  `id_servicio` int(11) DEFAULT NULL,
+  `id_turno` int(11) DEFAULT NULL,
+  `id_tipo_vehiculo` int(11) DEFAULT NULL,
+  `id_sub_tipo` varchar(100) DEFAULT NULL,
+  `id_comuna_origen` int(11) DEFAULT NULL,
+  `id_comuna_destino` int(11) DEFAULT NULL,
+  `direccion_origen` varchar(500) DEFAULT NULL,
+  `direccion_destino` varchar(500) DEFAULT NULL,
+  `tipo_camino` int(11) DEFAULT NULL,
+  `tipo_direccion` varchar(100) DEFAULT NULL,
+  `carga` varchar(100) DEFAULT NULL,
+  `total_km` decimal(10,2) DEFAULT NULL,
+  `monto_inicial` decimal(15,2) DEFAULT NULL,
+  `monto_final` decimal(15,2) DEFAULT NULL,
+  `monto_turno` decimal(15,2) DEFAULT NULL,
+  `monto_tipo_camino` decimal(15,2) DEFAULT NULL,
+  `credito_aplicado` decimal(15,2) DEFAULT NULL,
+  `Descripcion` text DEFAULT NULL,
+  `Panne` varchar(255) DEFAULT NULL,
+  `base_salida` varchar(255) DEFAULT NULL,
+  `nombre_solicitante` varchar(255) DEFAULT NULL,
+  `email_CLIENTE` varchar(255) DEFAULT NULL,
+  `telefono_CLIENTE` varchar(50) DEFAULT NULL,
+  `coordinador_id` int(11) DEFAULT NULL,
+  `forma_de_pago` varchar(100) DEFAULT NULL,
+  `documento_tributario` varchar(100) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT 'Pendiente',
+  `Fecha_servicio` date DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp(),
+  `token_aprobacion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_division` (`id_division`),
+  KEY `id_servicio` (`id_servicio`),
+  KEY `id_turno` (`id_turno`),
+  KEY `id_tipo_vehiculo` (`id_tipo_vehiculo`),
+  KEY `id_comuna_origen` (`id_comuna_origen`),
+  KEY `id_comuna_destino` (`id_comuna_destino`),
+  KEY `coordinador_id` (`coordinador_id`),
+  CONSTRAINT `cotizaciones_ibfk_1` FOREIGN KEY (`id_division`) REFERENCES `division` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_2` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_3` FOREIGN KEY (`id_turno`) REFERENCES `turno` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_4` FOREIGN KEY (`id_tipo_vehiculo`) REFERENCES `vehiculos` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_5` FOREIGN KEY (`id_comuna_origen`) REFERENCES `comunas` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_6` FOREIGN KEY (`id_comuna_destino`) REFERENCES `comunas` (`id`),
+  CONSTRAINT `cotizaciones_ibfk_7` FOREIGN KEY (`coordinador_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: division
+CREATE TABLE `division` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: empleados
+CREATE TABLE `empleados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rut` varchar(20) NOT NULL,
+  `nombre_completo` varchar(255) NOT NULL,
+  `celular` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `id_cargo` int(11) DEFAULT NULL,
+  `Banco` varchar(100) DEFAULT NULL,
+  `tipo_cuenta` varchar(100) DEFAULT NULL,
+  `numero_cuenta` varchar(100) DEFAULT NULL,
+  `centro_costo` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cargo` (`id_cargo`),
+  CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `cargos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: flota
+CREATE TABLE `flota` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `patente` varchar(20) DEFAULT NULL,
+  `marca` varchar(100) DEFAULT NULL,
+  `modelo` varchar(100) DEFAULT NULL,
+  `codigo_movil` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: gastos
+CREATE TABLE `gastos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_ot` int(11) DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `id_asociado` int(11) DEFAULT NULL,
+  `tipo` varchar(100) DEFAULT NULL,
+  `monto` decimal(15,2) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_ot` (`id_ot`),
+  KEY `id_empleado` (`id_empleado`),
+  KEY `id_asociado` (`id_asociado`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `gastos_ibfk_1` FOREIGN KEY (`id_ot`) REFERENCES `ordenes_trabajo` (`id`),
+  CONSTRAINT `gastos_ibfk_2` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id`),
+  CONSTRAINT `gastos_ibfk_3` FOREIGN KEY (`id_asociado`) REFERENCES `asociados` (`id`),
+  CONSTRAINT `gastos_ibfk_4` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: observaciones
+CREATE TABLE `observaciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_ot` int(11) DEFAULT NULL,
+  `comentario` text DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp(),
+  `fecha_modificacion` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_ot` (`id_ot`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `observaciones_ibfk_1` FOREIGN KEY (`id_ot`) REFERENCES `ordenes_trabajo` (`id`),
+  CONSTRAINT `observaciones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: ordenes_trabajo
+CREATE TABLE `ordenes_trabajo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cotizacion` int(11) DEFAULT NULL,
+  `Descripcion` text DEFAULT NULL,
+  `Fecha_creacion` datetime DEFAULT current_timestamp(),
+  `Fecha_Modificacion` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_usuario` int(11) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT 'En programación',
+  `info_marca` varchar(255) DEFAULT NULL,
+  `info_modelo` varchar(255) DEFAULT NULL,
+  `info_patente` varchar(100) DEFAULT NULL,
+  `info_chofer` varchar(255) DEFAULT NULL,
+  `info_telefono` varchar(50) DEFAULT NULL,
+  `info_contacto` varchar(255) DEFAULT NULL,
+  `documento_tributario` varchar(100) DEFAULT NULL,
+  `forma_pago` varchar(100) DEFAULT NULL,
+  `info_forma_pago` varchar(255) DEFAULT NULL,
+  `estado_facturacion` varchar(50) DEFAULT NULL,
+  `estado_cobro` varchar(50) DEFAULT 'Pendiente',
+  `fecha_aviso` datetime DEFAULT NULL,
+  `fecha_llegada` datetime DEFAULT NULL,
+  `fecha_termino` datetime DEFAULT NULL,
+  `fecha_documento` date DEFAULT NULL,
+  `fecha_pago` date DEFAULT NULL,
+  `nombre_pagador` varchar(255) DEFAULT NULL,
+  `num_caso` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cotizacion` (`id_cotizacion`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `ordenes_trabajo_ibfk_1` FOREIGN KEY (`id_cotizacion`) REFERENCES `cotizaciones` (`id`),
+  CONSTRAINT `ordenes_trabajo_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: roles
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insertar rol Administrador por defecto
+INSERT INTO `roles` (`id`, `nombre`) VALUES (1, 'Administrador');
+
+-- Tabla: servicios
+CREATE TABLE `servicios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(255) NOT NULL,
+  `id_division` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_division` (`id_division`),
+  CONSTRAINT `servicios_ibfk_1` FOREIGN KEY (`id_division`) REFERENCES `division` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: tarifa_especial
+CREATE TABLE `tarifa_especial` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `precio_base` int(11) DEFAULT 0,
+  `valor_km` int(11) DEFAULT 0,
+  `tope_km` int(11) DEFAULT 0,
+  `valor_custodia` int(11) DEFAULT 0,
+  `id_cliente` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cliente` (`id_cliente`),
+  CONSTRAINT `tarifa_especial_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: tipo_camino
+CREATE TABLE `tipo_camino` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `monto` decimal(15,2) DEFAULT 0.00,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: turno
+CREATE TABLE `turno` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `monto` decimal(15,2) DEFAULT 0.00,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla: usuarios
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRES` varchar(255) NOT NULL,
+  `APELLIDOS` varchar(255) NOT NULL,
+  `TELEFONO` varchar(50) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `NOMBRE_USUARIO` varchar(100) NOT NULL,
+  `CONTRASENA` varchar(255) NOT NULL,
+  `id_rol` int(11) DEFAULT NULL,
+  `FECHA` datetime DEFAULT current_timestamp(),
+  `FECHA_MODIFICACION` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `NOMBRE_USUARIO` (`NOMBRE_USUARIO`),
+  KEY `id_rol` (`id_rol`),
+  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insertar usuario admin por defecto (contraseña: admin en SHA256)
+INSERT INTO `usuarios` (`id`, `NOMBRES`, `APELLIDOS`, `TELEFONO`, `EMAIL`, `NOMBRE_USUARIO`, `CONTRASENA`, `id_rol`, `FECHA`, `FECHA_MODIFICACION`) 
+VALUES (1, '', '', NULL, NULL, 'admin', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1, '2026-02-21 02:02:00', '2026-02-21 02:03:08');
+
+-- Tabla: vehiculos
+CREATE TABLE `vehiculos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Tipo` varchar(100) DEFAULT NULL,
+  `sub_tipo` varchar(100) DEFAULT NULL,
+  `tipo_direccion` varchar(100) DEFAULT NULL,
+  `carga` varchar(100) DEFAULT NULL,
+  `monto_inicial` decimal(15,2) DEFAULT 0.00,
+  `Nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+```
+
+---
+
+## �📋 Resumen
 
 Este documento describe la estructura completa de la base de datos del **Sistema de Gestión de Cotizaciones y Órdenes de Trabajo**.
 
