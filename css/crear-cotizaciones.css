@@ -1,0 +1,90 @@
+/*PARA LOS MENSAJES REQUERIDOS EN CASO DE QUE FALTE RELLENAR DAT0S*/
+.campo-faltante {
+    border: 1px solid #dc3545 !important;
+}
+.mensaje-error-campo {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+.resumen-errores {
+    border-left: 4px solid #dc3545;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+/* Estilo para pestañas con errores - MUY VISIBLE */
+.nav-link.tab-con-error {
+    position: relative;
+    color: white !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    animation: pulse 2s infinite;
+}
+
+.nav-link.tab-con-error::after {
+    content: "!";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #dc3545;
+    background: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estilo para campos con error */
+.campo-faltante {
+    border: 2px solid #dc3545 !important;
+    background-color: #fff0f0 !important;
+}
+
+.mensaje-error-campo {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 0.25rem;
+    font-weight: bold;
+}
+
+.resumen-errores {
+    border: 2px solid #dc3545;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: #f8d7da;
+    border-radius: 5px;
+}
+
+/* Flecha indicadora */
+.arrow-indicator {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #dc3545;
+    font-size: 20px;
+}
+.tab-con-error {
+    color: #dc3545 !important; /* rojo */
+    font-weight: bold;
+    position: relative;
+}
+
+.tab-con-error::after {
+    content: ' ⚠️'; /* signo de exclamación */
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1em;
+    color: #dc3545;
+}

@@ -1,0 +1,129 @@
+body {
+    font-family: 'Inter', sans-serif !important;
+    background: transparent !important;
+}
+
+.title {
+    font-weight: 700 !important;
+    color: var(--primary-color);
+}
+
+.contenedor {
+    min-width: 1300px !important;
+}
+
+.table-striped {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.navbar {
+    background-color: #e9ecef;
+    padding: 8px 15px;
+}
+
+.navbar-brand img {
+    height: 50px;
+}
+
+.nav-item {
+    margin-right: 10px;
+}
+
+.filtros-container {
+    background-color: #ff3c38;
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.filtros-body {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.btn-facturar,
+.btn-facturado,
+.btn-pagado {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-seleccionar,
+.btn-quitar {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Contenedor de la tabla con scroll - MODIFICADO */
+.table-fixed-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    position: relative;
+    /* Nuevo: establece contexto de apilamiento */
+    border: 1px solid #dee2e6;
+    /* Opcional para visualización */
+}
+
+/* Encabezado de tabla FIX DEFINITIVO - MODIFICADO */
+.table-fixed-container .table.table-striped thead th {
+    background: #f8f9fc !important;
+    color: var(--secondary-color) !important;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    border-bottom: 2px solid #e3e6f0;
+}
+
+/* Estilos generales de la tabla */
+.table th,
+.table td {
+    padding: 8px;
+    vertical-align: middle;
+}
+
+/* Filas alternas (striped) - MODIFICADO para mayor compatibilidad */
+.table-fixed-container .table.table-striped tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+    /* Ligero ajuste de opacidad */
+}
+
+.action-icons i {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.form-control,
+.form-select {
+    height: 38px;
+    font-size: 14px;
+}
+
+.input-group-text {
+    background-color: #fff;
+    border-right: none;
+}
+
+.no-ordenes {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    margin-top: 20px;
+}
+
+/* Fix adicional para Bootstrap 5 si es necesario */
+.table-fixed-container table thead th {
+    background-color: inherit !important;
+    color: inherit !important;
+}
